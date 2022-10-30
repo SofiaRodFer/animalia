@@ -1,15 +1,17 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native'
 
 import { ThemeProvider } from 'styled-components';
 
 import * as SplashScreen from 'expo-splash-screen';
 
 import theme from './src/styles/theme';
+import { useFonts } from 'expo-font';
 import {
-  useFonts,
   VarelaRound_400Regular
 } from '@expo-google-fonts/varela-round'
+import { PetRoutes } from './src/routes/petRoutes.routes';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,7 +34,12 @@ export default function App() {
       translucent
       backgroundColor="transparent"
       />
+      <NavigationContainer>
+        <PetRoutes />
+      </NavigationContainer>
     </ThemeProvider>
   );
+
+
 }
 
