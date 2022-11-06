@@ -31,11 +31,11 @@ export function Pet({ pet }: PetProps) {
         <Container>
             <ImageContainer>
                 <Image
-                    source={pet.foto === undefined ? require('../../assets/padrao.png') : {uri: pet.foto}}
+                    source={pet.foto === undefined || pet.foto === null ? require('../../assets/padrao.png') : {uri: pet.foto}}
                 />
             </ImageContainer>
             <TextContainer style={{
-                shadowColor: 'black)',
+                shadowColor: 'black',
                 shadowOffset: { width: 2, height: 2 },
                 shadowOpacity: 0.4,
                 shadowRadius: 60,

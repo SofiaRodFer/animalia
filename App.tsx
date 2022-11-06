@@ -1,6 +1,10 @@
-import React from 'react';
-import { StatusBar } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { StatusBar, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
+
+import DatabaseInit from './src/database/DatabaseInit';
+
+import { PetRoutes } from './src/routes/petRoutes.routes';
 
 import { ThemeProvider } from 'styled-components';
 
@@ -11,11 +15,12 @@ import { useFonts } from 'expo-font';
 import {
   VarelaRound_400Regular
 } from '@expo-google-fonts/varela-round'
-import { PetRoutes } from './src/routes/petRoutes.routes';
 
 SplashScreen.preventAutoHideAsync();
 
 const showScreen = async () => await SplashScreen.hideAsync();
+
+const db = new DatabaseInit()
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -23,19 +28,29 @@ export default function App() {
     'Aloja-Light': require('./src/assets/fonts/Aloja-Light.ttf')
   })
 
-  if (!fontsLoaded) {
+  useEffect(() => {
     showScreen()
+  }, [fontsLoaded])
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
   }
 
   return (
     <ThemeProvider theme={theme}>
       <StatusBar
-      barStyle='light-content'
-      translucent
-      backgroundColor="transparent"
+        barStyle='light-content'
+        translucent
+        backgroundColor="transparent"
       />
       <NavigationContainer>
-        <PetRoutes />
+        <PetRoutes onLayout={onLayoutRootView} />
       </NavigationContainer>
     </ThemeProvider>
   );

@@ -9,6 +9,7 @@ export const Lista = styled.FlatList.attrs({
   contentContainerStyle: {
     justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: 20,
   }
 })`
   width: 100%;

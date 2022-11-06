@@ -22,7 +22,7 @@ export const Image = styled.Image`
 
 export const Text = styled.Text`
   font-family: ${({ theme }) => theme.fonts.logo};
-  font-size: 36px;
+  font-size: 46px;
   color: ${({ theme }) => theme.colors.secondary};
 
   margin-left: 10px;

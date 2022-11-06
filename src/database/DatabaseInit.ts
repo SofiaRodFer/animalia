@@ -16,7 +16,7 @@ export default class DatabaseInit {
     
     InitDb() {
         var sql = [
-            `DROP TABLE IF EXISTS Pet;`,
+            // `DROP TABLE IF EXISTS Pet;`,
 
             `create table if not exists Pet (
             id integer primary key autoincrement,

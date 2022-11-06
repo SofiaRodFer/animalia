@@ -1,16 +1,8 @@
 import styled from 'styled-components/native';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
+import { TouchableOpacity } from 'react-native'
 
-export const Container = styled.View`
-    width: 80%;
-
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-end;
-
-    margin-top: 20px;
-`;
-
-export const ImageContainer = styled.View``;
+export const ContainerFoto = styled.View``;
 
 export const Image = styled.Image`
     width: 120px;
@@ -21,7 +13,7 @@ export const Image = styled.Image`
     border-top-right-radius: 13px;
 `;
 
-export const TextContainer = styled.View`
+export const ContainerTexto = styled.View`
     height: 90%;
 
     background-color: ${({ theme }) => theme.colors.shape};
@@ -36,7 +28,8 @@ export const TextContainer = styled.View`
     border-bottom-right-radius: 23px;
 `;
 
-export const InfoContainer = styled.View`
+
+export const ContainerInfo = styled.View`
     width: 145px;
 
     margin-left: 15px;
@@ -48,13 +41,32 @@ export const Nome = styled.Text`
     font-size: 23px;
     color: ${({ theme }) => theme.colors.title};
 
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; */
 
     flex-wrap: wrap;
 `;
 
-export const Info = styled.Text`
-    font-family: ${({ theme }) => theme.fonts.regular};
-    font-size: 13.5px;
-    color: ${({ theme }) => theme.colors.text};
+export const Icon = styled(Ionicons)`
+    width: 17px;
+    height: 17px;
+`;
+
+export const Botoes = styled.View`
+    width: 100%;
+
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    margin-top: 10px;
+`;
+
+export const Botao = styled(TouchableOpacity)``;
+
+export const Trash = styled(Ionicons)`
+    opacity: 0.8;
+`;
+
+export const Pencil = styled(MaterialCommunityIcons)`
+    opacity: 0.8;
 `;

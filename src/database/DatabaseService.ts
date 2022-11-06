@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Pet } from '../models/PetModel';
+import { PetModel } from '../models/PetModel';
 import { DatabaseConnection } from './DatabaseInit';
 
 const table = "Pet"
-const db=DatabaseConnection.getConnection()
+const db = DatabaseConnection.getConnection()
 
 export default class PetService {
-    static adicionar(param: Pet) {
+    Inserir(param: PetModel) {
         return new Promise((resolve, reject) => db.transaction(
             tx => {
                 tx.executeSql(`insert into ${table} (nome, raca, dataNascimento, dataAdocao, genero, foto) 
@@ -36,7 +36,7 @@ export default class PetService {
     }
 
 
-    Atualizar(param: Pet) {
+    Atualizar(param: PetModel) {
         return new Promise((resolve, reject) =>db.transaction(tx => {
                 tx.executeSql(`update ${table} set nome = ?, raca = ?, dataNascimento = ?, dataAdocao = ?, genero = ?, foto = ? where id = ?;`, 
                 [param.nome, param.raca, param.dataNascimento, param.dataAdocao, param.genero, param.foto, param.id], () => {

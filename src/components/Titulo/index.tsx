@@ -3,7 +3,7 @@ import React from 'react';
 import { ColorContainer, Container, TituloComponent } from './styles';
 
 interface TituloProps {
-    tituloProp: string;
+  tituloProp: string;
 }
 
 export function Titulo({ tituloProp }: TituloProps) {

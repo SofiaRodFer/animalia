@@ -1,14 +1,16 @@
 import React from 'react';
 import { Platform } from 'react-native';
 
-import { MaterialIcons } from '@expo/vector-icons'
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { useTheme } from 'styled-components';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const { Navigator, Screen } = createBottomTabNavigator()
 
-import { HomeScreen } from '../screens/HomeScreen';
+import { Home } from '../screens/Home';
+import { Cadastro } from '../screens/Cadastro';
+import { Editar } from '../screens/Editar';
 
 export function PetRoutes() {
     const theme = useTheme()
@@ -29,9 +31,9 @@ export function PetRoutes() {
         >
             <Screen
                 name="Home"
-                component={HomeScreen}
+                component={Home}
                 options={{
-                    tabBarIcon: (({ size, color }) => 
+                    tabBarIcon: (({ size }) => 
                         <MaterialIcons
                             name="pets"
                             size={size}
@@ -40,6 +42,35 @@ export function PetRoutes() {
                     )
                 }}
             />
+
+            <Screen
+                name="Editar"
+                component={Editar}
+                options={{
+                    tabBarIcon: (({ size }) => 
+                        <MaterialIcons
+                            name="add-circle"
+                            size={size}
+                            color={theme.colors.primary}
+                        />
+                    )
+                }}
+            />
+
+            <Screen
+                name="Cadastro"
+                component={Cadastro}
+                options={{
+                    tabBarIcon: (({ size }) => 
+                        <MaterialCommunityIcons
+                            name="pencil"
+                            size={size}
+                            color={theme.colors.primary}
+                        />
+                    )
+                }}
+            />
+
         </Navigator>
     )
 }

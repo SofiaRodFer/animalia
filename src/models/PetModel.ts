@@ -1,5 +1,5 @@
 export type PetModel = {
-    id: string;
+    id?: string;
     nome: string;
     raca: string;
     dataNascimento: string;
