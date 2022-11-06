@@ -37,15 +37,19 @@ export default class PetService {
 
 
     Atualizar(param: PetModel) {
-        return new Promise((resolve, reject) =>db.transaction(tx => {
-                tx.executeSql(`update ${table} set nome = ?, raca = ?, dataNascimento = ?, dataAdocao = ?, genero = ?, foto = ? where id = ?;`, 
-                [param.nome, param.raca, param.dataNascimento, param.dataAdocao, param.genero, param.foto, param.id], () => {
-                }), (sqlError) => {
-                    console.log(sqlError);
-                }}, (txError) => {
+        return new Promise((resolve, reject) => db.transaction(tx => {
+            tx.executeSql(`update ${table} set nome = ?, raca = ?, dataNascimento = ?, dataAdocao = ?, genero = ?, foto = ? where id = ?;`, 
+            [param.nome, param.raca, param.dataNascimento, param.dataAdocao, param.genero, param.foto, param.id], 
+            (_, { rows }) => {
+                resolve(rows)
+            }), 
+            (sqlError) => {
+                console.log(sqlError);
+            }}, 
+            (txError) => {
                 console.log(txError);
-    
-            }));
+            }
+        ));
     }
 
     EncontrarPorId(id: number) {

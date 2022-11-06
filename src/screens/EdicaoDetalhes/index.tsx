@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Platform, TouchableOpacity, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -22,6 +22,7 @@ import {
     RegisterButton,
     TextRegisterButton
 } from './styles';
+import { PetModel } from '../../models/PetModel';
 
 interface FormData {
     nome: string;
@@ -32,27 +33,36 @@ interface FormData {
     foto?: string;
 }
 
+interface RouteParams {
+    pet: PetModel;
+}
+
 export function EdicaoDetalhes() {
-    const [foto, setFoto] = useState('')
+    const route = useRoute()
+    const { pet } = route.params as RouteParams
+
+    const [foto, setFoto] = useState(pet.foto)
+
+
     const navigation = useNavigation()
 
     const schema = Yup.object().shape({
         nome: Yup
-            .string()
-            .required('Insira um nome!'),
+            .string(),
         raca: Yup
-            .string()
-            .required('Insira uma raça!'),
+            .string(),
         dataNascimento: Yup
-            .string()
-            .required('Insira uma data!'),
+            .string(),
         dataAdocao: Yup
-            .string()
-            .required('Insira uma data!'),
+            .string(),
         genero: Yup
-            .string()
-            .required('Insira um gênero!'),
-      })
+            .string(),
+    })
+
+    useFocusEffect(useCallback(() => {
+        reset()
+        setFoto('')
+    }, []))
 
     const {
         control,
@@ -92,34 +102,37 @@ export function EdicaoDetalhes() {
         }
     } 
 
-    async function handleCadastro(form: FormData) {
-        const newPet = {
-            nome: form.nome.trim(),
-            raca: form.raca.trim(),
-            dataNascimento: form.dataNascimento.trim(),
-            dataAdocao: form.dataAdocao.trim(),
-            genero: form.genero.trim(),
-            foto: foto ? foto : undefined
+    async function handleEditar(form: FormData) {
+        const petEditado = {
+            id: pet.id,
+            nome: form.nome ? form.nome.trim() : pet.nome,
+            raca: form.raca ? form.raca.trim() : pet.raca,
+            dataNascimento: form.dataNascimento ? form.dataNascimento.trim() : pet.dataNascimento,
+            dataAdocao: form.dataAdocao ? form.dataAdocao.trim() : pet.dataAdocao,
+            genero: form.genero ? form.genero.trim() : pet.genero,
+            foto: foto ? foto : pet.foto
         }
 
         try {
             const banco = new PetService()
 
-            await banco.Inserir(newPet)
+            console.log('acima', petEditado)
+
+            await banco.Atualizar(petEditado)
 
             reset()
             setFoto('')
-
-            navigation.navigate('Home')
+    
+            navigation.navigate('Editar')
         } catch (error) {
-            Alert.alert('Não foi possível salvar')
+            Alert.alert('Não foi possível editar')
         }
     }
 
   return (
     <Container>
         <Header />
-        <Titulo tituloProp="Cadastrar pets" />
+        <Titulo tituloProp="Editar pet" />
 
         <Form>
             <Fields>
@@ -129,6 +142,7 @@ export function EdicaoDetalhes() {
                     name="nome"
                     autoCapitalize='words'
                     autoCorrect={false}
+                    defaultValue={pet.nome}
                 />
 
                 <InputForm 
@@ -137,18 +151,21 @@ export function EdicaoDetalhes() {
                     name="raca"
                     autoCapitalize='words'
                     autoCorrect={true}
+                    defaultValue={pet.raca}
                 />
 
                 <InputForm 
                     placeholder='Data de nascimento...'
                     control={formControl}
                     name="dataNascimento"
+                    defaultValue={pet.dataNascimento}
                 />
 
                 <InputForm 
                     placeholder='Data de adoção...'
                     control={formControl}
                     name="dataAdocao"
+                    defaultValue={pet.dataAdocao}
                 />
 
                 <InputForm 
@@ -157,14 +174,15 @@ export function EdicaoDetalhes() {
                     name="genero"
                     autoCapitalize='words'
                     autoCorrect={true}
+                    defaultValue={pet.genero}
                 />
 
                 <ImageInput onPress={escolherImagem}>
                     <ImageInputText>{foto ? 'Imagem selecionada!' : 'Selecione uma imagem...'}</ImageInputText>
                 </ImageInput>
             </Fields>
-            <RegisterButton onPress={handleSubmit(handleCadastro)}>
-                <TextRegisterButton>cadastrar</TextRegisterButton>
+            <RegisterButton onPress={handleSubmit(handleEditar)}>
+                <TextRegisterButton>editar</TextRegisterButton>
             </RegisterButton>
         </Form>
     </Container>

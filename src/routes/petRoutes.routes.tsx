@@ -11,6 +11,7 @@ const { Navigator, Screen } = createBottomTabNavigator()
 import { Home } from '../screens/Home';
 import { Cadastro } from '../screens/Cadastro';
 import { Editar } from '../screens/Editar';
+import { EdicaoDetalhes } from '../screens/EdicaoDetalhes';
 
 export function PetRoutes() {
     const theme = useTheme()
@@ -44,8 +45,8 @@ export function PetRoutes() {
             />
 
             <Screen
-                name="Editar"
-                component={Editar}
+                name="Cadastro"
+                component={Cadastro}
                 options={{
                     tabBarIcon: (({ size }) => 
                         <MaterialIcons
@@ -58,17 +59,23 @@ export function PetRoutes() {
             />
 
             <Screen
-                name="Cadastro"
-                component={Cadastro}
+                name="Editar"
+                component={Editar}
                 options={{
                     tabBarIcon: (({ size }) => 
                         <MaterialCommunityIcons
                             name="pencil"
                             size={size}
-                            color={theme.colors.primary}
+                            color={theme.colors.title}
                         />
                     )
                 }}
+            />
+
+            <Screen
+                name="EdicaoDetalhes"
+                component={EdicaoDetalhes}
+                options={{ tabBarButton: () => null }}
             />
 
         </Navigator>

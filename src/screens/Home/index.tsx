@@ -21,6 +21,8 @@ export function Home() {
 
       const petsLista = await banco.Listar()
 
+      // console.log(petsLista._array)
+
       setPets(petsLista._array)
     } catch (error) {
       Alert.alert('Não foi possível carregar os pets')
