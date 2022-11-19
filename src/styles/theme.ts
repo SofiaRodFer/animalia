@@ -7,6 +7,7 @@ export default {
         shape: '#FFFFFF',
         title: '#000000',
         text: 'rgba(0, 0, 0, 0.6)',
+        input: 'rgba(0, 0, 0, 0.4)',
 
         shadow: 'rgba(0, 0, 0, 0.2)',
     },

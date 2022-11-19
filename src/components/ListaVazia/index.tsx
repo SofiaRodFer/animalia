@@ -16,7 +16,7 @@ export function ListaVazia() {
           <Title>Você atualmente não possui nenhum animal cadastrado!</Title>
           <Button onPress={() => {
               navigation.navigate('Cadastro');
-          }}>
+            }}>
               <ButtonText>cadastrar</ButtonText>
           </Button>
       </Container>

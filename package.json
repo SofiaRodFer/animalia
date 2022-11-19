@@ -11,8 +11,11 @@
   "dependencies": {
     "@expo-google-fonts/varela-round": "^0.2.2",
     "@hookform/resolvers": "^2.9.10",
+    "@react-native-community/datetimepicker": "6.2.0",
+    "@react-native-picker/picker": "2.4.2",
     "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/native": "^6.0.13",
+    "dayjs": "^1.11.6",
     "expo": "~46.0.16",
     "expo-asset": "~8.6.1",
     "expo-file-system": "~14.1.0",

@@ -45,7 +45,7 @@ export function Pet({ pet }: PetProps) {
                     <Nome numberOfLines={1}>
                         {pet.nome}
                     </Nome>
-                    <Info>
+                    <Info numberOfLines={1}>
                         {pet.raca}
                         { pet.genero.toLowerCase() === 'feminino' 
                             ? <MaterialCommunityIcons name="gender-female" size={14} />

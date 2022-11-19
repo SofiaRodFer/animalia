@@ -1,3 +1,4 @@
+import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
@@ -12,7 +13,7 @@ export const Title = styled.Text`
     color: ${({ theme }) => theme.colors.text};
 `;
 
-export const Button = styled.View`
+export const Button = styled(TouchableOpacity)`
     width: 60%;
     height: 30px;
 

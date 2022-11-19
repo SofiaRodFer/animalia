@@ -38,7 +38,7 @@ export function PetRoutes() {
                         <MaterialIcons
                             name="pets"
                             size={size}
-                            color={theme.colors.title}
+                            color={theme.colors.text}
                         />
                     )
                 }}
@@ -66,7 +66,7 @@ export function PetRoutes() {
                         <MaterialCommunityIcons
                             name="pencil"
                             size={size}
-                            color={theme.colors.title}
+                            color={theme.colors.text}
                         />
                     )
                 }}

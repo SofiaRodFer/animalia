@@ -1,8 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, Platform, TouchableOpacity, Text } from 'react-native';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Control, FieldValues, useForm } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
+import { useTheme } from 'styled-components';
+import dayjs from 'dayjs';
 
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -20,7 +24,10 @@ import {
     ImageInput,
     ImageInputText,
     RegisterButton,
-    TextRegisterButton
+    TextRegisterButton,
+    GenderPickerContainer,
+    GenderPicker,
+    GenderPickerItem
 } from './styles';
 import { PetModel } from '../../models/PetModel';
 
@@ -41,28 +48,27 @@ export function EdicaoDetalhes() {
     const route = useRoute()
     const { pet } = route.params as RouteParams
 
-    const [foto, setFoto] = useState(pet.foto)
+    const [foto, setFoto] = useState('')
 
+    const [datePickerNascimento, setDatePickerNascimento] = useState(false);
+    const [dateNascimento, setDateNascimento] = useState(new Date());
+
+    const [datePickerAdocao, setDatePickerAdocao] = useState(false);
+    const [dateAdocao, setDateAdocao] = useState(new Date());
+
+    const [genero, setGenero] = useState('');
 
     const navigation = useNavigation()
+    const theme = useTheme()
 
     const schema = Yup.object().shape({
         nome: Yup
-            .string(),
+            .string()
+            .required('Insira um nome!'),
         raca: Yup
-            .string(),
-        dataNascimento: Yup
-            .string(),
-        dataAdocao: Yup
-            .string(),
-        genero: Yup
-            .string(),
-    })
-
-    useFocusEffect(useCallback(() => {
-        reset()
-        setFoto('')
-    }, []))
+            .string()
+            .required('Insira uma raça!')
+      })
 
     const {
         control,
@@ -97,8 +103,14 @@ export function EdicaoDetalhes() {
             quality: 1,
         });
 
+        const { uri } = result as ImagePicker.ImageInfo
+
+        if(result.cancelled) {
+            return
+        }
+
         if (!result.cancelled) {
-          setFoto(result.uri);
+          setFoto(uri);
         }
     } 
 
@@ -107,84 +119,143 @@ export function EdicaoDetalhes() {
             id: pet.id,
             nome: form.nome ? form.nome.trim() : pet.nome,
             raca: form.raca ? form.raca.trim() : pet.raca,
-            dataNascimento: form.dataNascimento ? form.dataNascimento.trim() : pet.dataNascimento,
-            dataAdocao: form.dataAdocao ? form.dataAdocao.trim() : pet.dataAdocao,
-            genero: form.genero ? form.genero.trim() : pet.genero,
+            dataNascimento: dayjs(dateNascimento).format('DD/MM/YYYY').toString(),
+            dataAdocao: dayjs(dateAdocao).format('DD/MM/YYYY').toString(),
+            genero,
             foto: foto ? foto : pet.foto
         }
 
         try {
-            const banco = new PetService()
+            await schema.validate(petEditado)
 
-            console.log('acima', petEditado)
+            const banco = new PetService()
 
             await banco.Atualizar(petEditado)
 
             reset()
             setFoto('')
+            setDateNascimento(new Date(pet.dataNascimento))
+            setDateAdocao(new Date(pet.dataAdocao))
     
             navigation.navigate('Editar')
         } catch (error) {
-            Alert.alert('Não foi possível editar')
+            if(error instanceof Yup.ValidationError) {
+                Alert.alert('Opa!', error.message)
+            }
+            Alert.alert('Opa!', 'Não foi possível editar')
         }
     }
 
+    function showDatePickerNascimento() {
+        setDatePickerNascimento(true);
+    };
+    
+    function onDateSelectedNascimento(event, value) {
+        setDateNascimento(value);
+        setDatePickerNascimento(false);
+    };
+
+    function showDatePickerAdocao() {
+        setDatePickerAdocao(true);
+    };
+    
+    function onDateSelectedAdocao(event, value) {
+        setDateAdocao(value);
+        setDatePickerAdocao(false);
+    };
+
   return (
-    <Container>
-        <Header />
-        <Titulo tituloProp="Editar pet" />
+    <KeyboardAvoidingView  behavior="position" enabled style={{ backgroundColor: theme.colors.shape}}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Container>
+                <Header />
+                <Titulo tituloProp="Editar pet" />
 
-        <Form>
-            <Fields>
-                <InputForm 
-                    placeholder='Nome...'
-                    control={formControl}
-                    name="nome"
-                    autoCapitalize='words'
-                    autoCorrect={false}
-                    defaultValue={pet.nome}
-                />
+                <Form>
+                    <Fields>
+                        <InputForm 
+                            placeholder='Nome...'
+                            control={formControl}
+                            name="nome"
+                            autoCapitalize='words'
+                            autoCorrect={false}
+                            defaultValue={pet.nome}
+                        />
 
-                <InputForm 
-                    placeholder='Raça...'
-                    control={formControl}
-                    name="raca"
-                    autoCapitalize='words'
-                    autoCorrect={true}
-                    defaultValue={pet.raca}
-                />
+                        <InputForm 
+                            placeholder='Raça...'
+                            control={formControl}
+                            name="raca"
+                            autoCapitalize='words'
+                            autoCorrect={true}
+                            defaultValue={pet.raca}
+                        />
 
-                <InputForm 
-                    placeholder='Data de nascimento...'
-                    control={formControl}
-                    name="dataNascimento"
-                    defaultValue={pet.dataNascimento}
-                />
+                        {datePickerNascimento && (
+                          <RNDateTimePicker
+                            value={dateNascimento}
+                            mode={'date'}
+                            display="default"
+                            is24Hour={true}
+                            onChange={onDateSelectedNascimento}
+                          />
+                        )}
 
-                <InputForm 
-                    placeholder='Data de adoção...'
-                    control={formControl}
-                    name="dataAdocao"
-                    defaultValue={pet.dataAdocao}
-                />
+                        <ImageInput onPress={showDatePickerNascimento}>
+                            <ImageInputText>
+                                {
+                                    dateNascimento.getDate() === new Date().getDate() 
+                                    ? pet.dataNascimento
+                                    : dayjs(String(dateNascimento)).format('DD/MM/YYYY') 
+                                }
+                            </ImageInputText>
+                        </ImageInput>
 
-                <InputForm 
-                    placeholder='Gênero...'
-                    control={formControl}
-                    name="genero"
-                    autoCapitalize='words'
-                    autoCorrect={true}
-                    defaultValue={pet.genero}
-                />
+                        {datePickerAdocao && (
+                          <RNDateTimePicker
+                            value={dateAdocao}
+                            mode={'date'}
+                            display="default"
+                            is24Hour={true}
+                            onChange={onDateSelectedAdocao}
+                          />
+                        )}
 
-                <ImageInput onPress={escolherImagem}>
-                    <ImageInputText>{foto ? 'Imagem selecionada!' : 'Selecione uma imagem...'}</ImageInputText>
-                </ImageInput>
-            </Fields>
-            <RegisterButton onPress={handleSubmit(handleEditar)}>
-                <TextRegisterButton>editar</TextRegisterButton>
-            </RegisterButton>
-        </Form>
-    </Container>
+                        <ImageInput onPress={showDatePickerAdocao}>
+                            <ImageInputText>
+                                {
+                                    dateAdocao.getDate() === new Date().getDate() 
+                                    ? pet.dataAdocao 
+                                    : dayjs(String(dateAdocao)).format('DD/MM/YYYY') 
+                                }
+                            </ImageInputText>
+                        </ImageInput>
+
+                        <GenderPickerContainer>
+                            <GenderPicker
+                                selectedValue={genero === '' ? pet.genero : genero}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setGenero(itemValue)
+                                }}
+                            >
+                                <GenderPickerItem label="Feminino" value="feminino" />
+                                <GenderPickerItem label="Masculino" value="masculino" />
+                            </GenderPicker>
+                        </GenderPickerContainer>
+
+                        <ImageInput onPress={escolherImagem}>
+                            <ImageInputText isNotFilled={pet.foto === null && foto === ''}>
+                                {pet.foto === null && foto === '' ? 'Selecione uma imagem...' : 'Imagem selecionada!'}
+                            </ImageInputText>
+                        </ImageInput>
+                    </Fields>
+                    <RegisterButton onPress={handleSubmit(handleEditar)}>
+                        <TextRegisterButton>editar</TextRegisterButton>
+                    </RegisterButton>
+                </Form>
+            </Container>
+        </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+
   );
 }

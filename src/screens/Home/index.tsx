@@ -14,14 +14,12 @@ import { Container, Lista } from './styles';
 
 export function Home() {
   const [pets, setPets] = useState<PetModel[]>([])
-  
+    
   async function listarPets() {
     try {
       const banco = new PetService()
 
       const petsLista = await banco.Listar()
-
-      // console.log(petsLista._array)
 
       setPets(petsLista._array)
     } catch (error) {

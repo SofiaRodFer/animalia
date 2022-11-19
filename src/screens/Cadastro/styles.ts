@@ -1,8 +1,18 @@
 import { TouchableOpacity } from 'react-native';
-import styled from 'styled-components/native';
+import { Picker, PickerProps } from '@react-native-picker/picker';
+
+import styled, { css } from 'styled-components/native';
+
+interface ImageInputTextProps {
+    isFilled: boolean;
+}
+
+interface GenderPickerProps extends PickerProps {
+    generoFoiSelecionado: boolean;
+}
 
 export const Container = styled.View`
-  flex: 1;
+  height: 100%;
 
   background-color: ${({ theme }) => theme.colors.shape};
 `;
@@ -48,9 +58,11 @@ export const ImageInput = styled(TouchableOpacity)`
     border-top-right-radius: 30px;
 `;
 
-export const ImageInputText = styled.Text`
+export const ImageInputText = styled.Text<ImageInputTextProps>`
     font-family: ${({ theme }) => theme.fonts.regular};
     font-size: 15px;
+
+    color: ${({ theme, isFilled }) => isFilled ? theme.colors.title : theme.colors.input}
 `;
 
 export const RegisterButton = styled(TouchableOpacity)`
@@ -70,3 +82,33 @@ export const TextRegisterButton = styled.Text`
     font-size: 20px;
     color: ${({ theme }) => theme.colors.shape};
 `
+export const GenderPickerContainer = styled.View`
+    margin-top: 15px;
+
+    border-radius: 500px;
+    overflow: hidden;
+
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+`;
+
+export const GenderPicker = styled(Picker)<GenderPickerProps>`
+    width: 340px;
+    height: 10px;
+
+    font-family: ${({ theme }) => theme.fonts.regular};
+    font-size: 15px;
+
+    background-color: ${({ theme }) => theme.colors.primary};
+
+    padding: 10px;
+
+    ${({ generoFoiSelecionado, theme }) => !generoFoiSelecionado && css`
+        color: ${theme.colors.input}
+    `}
+`;
+
+export const GenderPickerItem = styled(Picker.Item)``;
+
