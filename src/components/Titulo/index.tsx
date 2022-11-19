@@ -10,7 +10,7 @@ export function Titulo({ tituloProp }: TituloProps) {
   return (
     <ColorContainer>
         <Container>
-            <TituloComponent>{tituloProp}</TituloComponent>
+          <TituloComponent>{tituloProp}</TituloComponent>
         </Container>
     </ColorContainer>
   );

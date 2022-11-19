@@ -12,6 +12,7 @@ import { Home } from '../screens/Home';
 import { Cadastro } from '../screens/Cadastro';
 import { Editar } from '../screens/Editar';
 import { EdicaoDetalhes } from '../screens/EdicaoDetalhes';
+import { Detalhes } from '../screens/Detalhes';
 
 export function PetRoutes() {
     const theme = useTheme()
@@ -75,6 +76,12 @@ export function PetRoutes() {
             <Screen
                 name="EdicaoDetalhes"
                 component={EdicaoDetalhes}
+                options={{ tabBarButton: () => null }}
+            />
+
+            <Screen
+                name="Detalhes"
+                component={Detalhes}
                 options={{ tabBarButton: () => null }}
             />
 

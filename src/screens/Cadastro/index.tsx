@@ -231,8 +231,8 @@ export function Cadastro() {
                                 generoFoiSelecionado={generoFoiSelecionado}
                             >
                                 <GenderPickerItem label="Gênero..." enabled={false} />
-                                <GenderPickerItem label="Feminino" value="feminino" />
-                                <GenderPickerItem label="Masculino" value="masculino" />
+                                <GenderPickerItem label="Fêmea" value="feminino" />
+                                <GenderPickerItem label="Macho" value="masculino" />
                             </GenderPicker>
                         </GenderPickerContainer>
 

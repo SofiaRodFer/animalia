@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
+import { TouchableOpacity } from 'react-native'
 
-export const Container = styled.View`
+export const Container = styled(TouchableOpacity)`
     width: 80%;
 
     flex-direction: row;

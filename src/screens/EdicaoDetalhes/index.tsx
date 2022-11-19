@@ -238,8 +238,8 @@ export function EdicaoDetalhes() {
                                     setGenero(itemValue)
                                 }}
                             >
-                                <GenderPickerItem label="Feminino" value="feminino" />
-                                <GenderPickerItem label="Masculino" value="masculino" />
+                                <GenderPickerItem label="Fêmea" value="feminino" />
+                                <GenderPickerItem label="Macho" value="masculino" />
                             </GenderPicker>
                         </GenderPickerContainer>
 

@@ -9,6 +9,9 @@ export declare global {
             EdicaoDetalhes: {
                 pet: PetModel
             };
+            Detalhes: {
+                pet: PetModel
+            }
         }
     }
 }

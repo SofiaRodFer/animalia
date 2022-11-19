@@ -1,5 +1,6 @@
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native';
 
 import { PetModel } from '../../models/PetModel';
 
@@ -18,6 +19,8 @@ interface PetProps {
 }
 
 export function Pet({ pet }: PetProps) {
+    const navigation = useNavigation()
+
     function pegarAnos(data: string) {
         const arrayData = data.split('/');
         const anoAtual = new Date().getFullYear();
@@ -27,8 +30,12 @@ export function Pet({ pet }: PetProps) {
         return idade;
     }
 
+    function handlePress() {
+        navigation.navigate('Detalhes', { pet })
+    }
+
     return (
-        <Container>
+        <Container onPress={handlePress}>
             <ImageContainer>
                 <Image
                     source={pet.foto === undefined || pet.foto === null ? require('../../assets/padrao.png') : {uri: pet.foto}}

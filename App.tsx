@@ -15,6 +15,7 @@ import { useFonts } from 'expo-font';
 import {
   VarelaRound_400Regular
 } from '@expo-google-fonts/varela-round'
+import { Detalhes } from './src/screens/Detalhes';
 
 SplashScreen.preventAutoHideAsync();
 
