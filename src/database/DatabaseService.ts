@@ -11,14 +11,15 @@ export default class PetService {
         return new Promise((resolve, reject) => db.transaction(
             tx => {
                 tx.executeSql(`insert into ${table} (nome, raca, dataNascimento, dataAdocao, genero, foto) 
-                values (?, ?, ?, ?, ?, ?)`, 
-                [param.nome, param.raca, param.dataNascimento, param.dataAdocao, param.genero, param.foto], 
-                (_, { insertId, rows }) => {
-                    console.log("id insert: " + insertId);
-                    resolve(insertId)
-                }), (sqlError) => {
-                    console.log(sqlError);
-                }}, (txError) => {
+                values (?, ?, ?, ?, ?, ?)`,
+                    [param.nome, param.raca, param.dataNascimento, param.dataAdocao, param.genero, param.foto],
+                    (_, { insertId, rows }) => {
+                        console.log("id insert: " + insertId);
+                        resolve(insertId)
+                    }), (sqlError) => {
+                        console.log(sqlError);
+                    }
+            }, (txError) => {
                 console.log(txError);
             }));
     }
@@ -29,23 +30,25 @@ export default class PetService {
                 tx.executeSql(`delete from ${table} where id = ?;`, [id], (_, { rows }) => {
                 }), (sqlError) => {
                     console.log(sqlError);
-                }}, (txError) => {
+                }
+            }, (txError) => {
                 console.log(txError);
-    
+
             });
     }
 
 
     Atualizar(param: PetModel) {
         return new Promise((resolve, reject) => db.transaction(tx => {
-            tx.executeSql(`update ${table} set nome = ?, raca = ?, dataNascimento = ?, dataAdocao = ?, genero = ?, foto = ? where id = ?;`, 
-            [param.nome, param.raca, param.dataNascimento, param.dataAdocao, param.genero, param.foto, param.id], 
-            (_, { rows }) => {
-                resolve(rows)
-            }), 
-            (sqlError) => {
-                console.log(sqlError);
-            }}, 
+            tx.executeSql(`update ${table} set nome = ?, raca = ?, dataNascimento = ?, dataAdocao = ?, genero = ?, foto = ? where id = ?;`,
+                [param.nome, param.raca, param.dataNascimento, param.dataAdocao, param.genero, param.foto, param.id],
+                (_, { rows }) => {
+                    resolve(rows)
+                }),
+                (sqlError) => {
+                    console.log(sqlError);
+                }
+        },
             (txError) => {
                 console.log(txError);
             }
@@ -58,7 +61,8 @@ export default class PetService {
                 resolve(rows)
             }), (sqlError) => {
                 console.log(sqlError);
-            }}, (txError) => {
+            }
+        }, (txError) => {
             console.log(txError);
 
         }));
@@ -70,8 +74,23 @@ export default class PetService {
                 resolve(rows)
             }), (sqlError) => {
                 console.log(sqlError);
-            }}, (txError) => {
+            }
+        }, (txError) => {
             console.log(txError);
         }))
     }
+
+    Teste() {
+        return new Promise((resolve, reject) => db.transaction(tx => {
+            tx.executeSql(`select * from ${table}`, [], (_, { rows }) => {
+                resolve(rows)
+            }), (sqlError) => {
+                console.log(sqlError);
+            }
+        }, (txError) => {
+            console.log(txError);
+        }))
+    }
+
+    // console.log(rows._array[0])
 }

@@ -14,23 +14,25 @@ import { Container, Lista } from './styles';
 
 export function Home() {
   const [pets, setPets] = useState<PetModel[]>([])
-    
+
   async function listarPets() {
     try {
       const banco = new PetService()
 
       const petsLista = await banco.Listar()
 
+      // await banco.Teste()
+
       setPets(petsLista._array)
     } catch (error) {
       Alert.alert('Não foi possível carregar os pets')
     }
   }
-  
+
   useEffect(() => {
     listarPets()
   }, [])
-  
+
   useFocusEffect(useCallback(() => {
     listarPets()
   }, []))
@@ -43,12 +45,12 @@ export function Home() {
       {pets.length === 0
         ? <ListaVazia />
         : <Lista
-            data={pets}
-            keyExtractor={(item: PetModel) => item.id}
-            renderItem={({ item }) => (
-              <Pet pet={item} />
-            )}
-          />
+          data={pets}
+          keyExtractor={(item: PetModel) => item.id}
+          renderItem={({ item }) => (
+            <Pet pet={item} />
+          )}
+        />
       }
 
     </Container>

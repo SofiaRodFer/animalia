@@ -9,11 +9,11 @@ export default class DatabaseInit {
     constructor() {
         db = DatabaseConnection.getConnection()
         db.exec([{ sql: 'PRAGMA foreign_keys = ON;', args: [] }], false, () =>
-        console.log('Foreign keys turned on')
-    );
+            console.log('Foreign keys turned on')
+        );
         this.InitDb()
     }
-    
+
     InitDb() {
         var sql = [
             // `DROP TABLE IF EXISTS Pet;`,
